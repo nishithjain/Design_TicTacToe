@@ -19,6 +19,7 @@ The project is organized as follows:
         ├───exceptions     # Source files for exception handling
         ├───factory        # Source files for factory pattern
         └───strategy       # Source files for strategy pattern
+```
 
 ## Features
 - **Core Game Logic**: Manages the rules and flow of the TicTacToe game.
