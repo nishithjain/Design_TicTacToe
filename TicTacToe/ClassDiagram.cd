@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TicTacToeGame">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAQAAAAAAAAQAAAAABAIAAAAAAgAAA=</HashCode>
+      <FileName>TicTacToeGame.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="board_" />
+      <Field Name="game_status_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Bot">
+    <Position X="1.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Bot.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bot_difficulty_level_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Cell">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAIAAQAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Cell.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cell_state_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GameBoard">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>GameBoard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Move" Collapsed="true">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Move.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cell_" />
+      <Field Name="player_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Player">
+    <Position X="1.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAIgA=</HashCode>
+      <FileName>Player.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="player_type_" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="BotDifficultyLevel">
+    <Position X="4.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>BotDifficultyLevel.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CellState">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellState.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GameStatus">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameStatus.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayerType">
+    <Position X="4.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlayerType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

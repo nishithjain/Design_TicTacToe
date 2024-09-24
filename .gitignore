@@ -1,0 +1,13 @@
+# Ignore Visual Studio temporary files
+.vs/
+
+# Ignore temporary Notes files
+Notes/*.tmp
+Notes/~$*
+
+# Ignore build directories and binaries
+TicTacToe/x64/
+x64/
+
+# Ignore temporary files
+*.tmp
