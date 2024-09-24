@@ -4,9 +4,9 @@
 #include <set>
 #include <stdexcept>
 
-#include "../../BoardDimensionException.h"
-#include "../../DuplicatePlayerSymbolException.h"
-#include "../../PlayerCountException.h"
+#include "BoardDimensionException.h"
+#include "DuplicatePlayerSymbolException.h"
+#include "PlayerCountException.h"
 
 Player TicTacToeGame::GetWinner() const
 {
