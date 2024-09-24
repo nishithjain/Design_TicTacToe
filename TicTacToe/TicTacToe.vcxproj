@@ -132,8 +132,6 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoardDimensionException.h" />
-    <ClInclude Include="DuplicatePlayerSymbolException.h" />
     <ClInclude Include="headers\core\Bot.h" />
     <ClInclude Include="headers\core\BotDifficultyLevel.h" />
     <ClInclude Include="headers\core\Cell.h" />
@@ -144,12 +142,11 @@
     <ClInclude Include="headers\core\Player.h" />
     <ClInclude Include="headers\core\PlayerType.h" />
     <ClInclude Include="headers\core\TicTacToeGame.h" />
-    <ClInclude Include="PlayerCountException.h" />
+    <ClInclude Include="headers\exceptions\BoardDimensionException.h" />
+    <ClInclude Include="headers\exceptions\DuplicatePlayerSymbolException.h" />
+    <ClInclude Include="headers\exceptions\PlayerCountException.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BoardDimensionException.cpp" />
-    <ClCompile Include="DuplicatePlayerSymbolException.cpp" />
-    <ClCompile Include="PlayerCountException.cpp" />
     <ClCompile Include="source\core\Bot.cpp" />
     <ClCompile Include="source\core\Cell.cpp" />
     <ClCompile Include="source\core\GameBoard.cpp" />
@@ -157,6 +154,9 @@
     <ClCompile Include="source\core\Player.cpp" />
     <ClCompile Include="source\core\Source.cpp" />
     <ClCompile Include="source\core\TicTacToeGame.cpp" />
+    <ClCompile Include="source\exceptions\BoardDimensionException.cpp" />
+    <ClCompile Include="source\exceptions\DuplicatePlayerSymbolException.cpp" />
+    <ClCompile Include="source\exceptions\PlayerCountException.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

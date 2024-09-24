@@ -72,13 +72,13 @@
     <ClInclude Include="headers\core\PlayerType.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerCountException.h">
+    <ClInclude Include="headers\exceptions\BoardDimensionException.h">
       <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="BoardDimensionException.h">
+    <ClInclude Include="headers\exceptions\DuplicatePlayerSymbolException.h">
       <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="DuplicatePlayerSymbolException.h">
+    <ClInclude Include="headers\exceptions\PlayerCountException.h">
       <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,13 +104,13 @@
     <ClCompile Include="source\core\TicTacToeGame.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerCountException.cpp">
+    <ClCompile Include="source\exceptions\BoardDimensionException.cpp">
       <Filter>Source Files\Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="BoardDimensionException.cpp">
+    <ClCompile Include="source\exceptions\DuplicatePlayerSymbolException.cpp">
       <Filter>Source Files\Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="DuplicatePlayerSymbolException.cpp">
+    <ClCompile Include="source\exceptions\PlayerCountException.cpp">
       <Filter>Source Files\Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
