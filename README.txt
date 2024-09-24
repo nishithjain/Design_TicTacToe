@@ -1,7 +1,7 @@
 # TicTacToe - C++ Implementation
 
 ## Overview
-This is a C++ implementation of the classic TicTacToe game. The project is organized into different modules such as `core`, `exceptions`, `factory`, and `strategy`, following best practices in design and architecture. The game allows multiple players and includes custom exception handling for game-related errors like invalid board dimensions or duplicate player symbols.
+This is a C++ implementation of the classic TicTacToe game. The project is organized into modules such as `core`, `exceptions`, `factory`, and `strategy`, following best practices in design and architecture. The game allows multiple players and includes custom exception handling for game-related errors like invalid board dimensions or duplicate player symbols.
 
 ## Project Structure
 The project is organized as follows:
