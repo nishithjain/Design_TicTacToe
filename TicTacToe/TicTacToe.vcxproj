@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)headers\core;$(ProjectDir)headers\factory;$(ProjectDir)headers\strategy;$(ProjectDir)headers\exceptions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)headers\core;$(ProjectDir)headers\factory;$(ProjectDir)headers\strategy;$(ProjectDir)headers\exceptions;$(ProjectDir)headers\controller;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)headers\core;$(ProjectDir)headers\factory;$(ProjectDir)headers\strategy;$(ProjectDir)headers\exceptions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)headers\core;$(ProjectDir)headers\factory;$(ProjectDir)headers\strategy;$(ProjectDir)headers\exceptions;$(ProjectDir)headers\controller;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +132,7 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\controller\GameController.h" />
     <ClInclude Include="headers\core\Bot.h" />
     <ClInclude Include="headers\core\BotDifficultyLevel.h" />
     <ClInclude Include="headers\core\Cell.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="headers\exceptions\PlayerCountException.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\controller\GameController.cpp" />
     <ClCompile Include="source\core\Bot.cpp" />
     <ClCompile Include="source\core\Cell.cpp" />
     <ClCompile Include="source\core\GameBoard.cpp" />

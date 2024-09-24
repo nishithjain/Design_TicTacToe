@@ -28,6 +28,8 @@ public:
 	void SetNextPlayerIndex(int next_player_index);
 	GameStatus GetGameStatus() const;
 	void SetGameStatus(GameStatus game_status);
+	void DisplayBoard() const;
+	void ExecuteNextMove();
 
 	explicit TicTacToeGame(size_t dimension, ListOfPlayers players);
 

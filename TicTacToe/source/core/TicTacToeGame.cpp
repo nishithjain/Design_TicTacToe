@@ -58,6 +58,18 @@ void TicTacToeGame::SetGameStatus(const GameStatus game_status)
 	game_status_ = game_status;
 }
 
+void TicTacToeGame::DisplayBoard() const
+{
+	board_.Display();
+}
+
+void TicTacToeGame::ExecuteNextMove()
+{
+	// Step 1: Player should be able to decide the move.
+	// Step 2: Check the validation of the move. If move is valid, then make the move or else reject it.
+
+}
+
 TicTacToeGame::TicTacToeGame(const size_t dimension, ListOfPlayers players) :
 	board_(dimension), players_(std::move(players))
 {
@@ -108,8 +120,8 @@ bool TicTacToeGame::GameBuilder::HasDuplicatePlayerSymbols() const
 
 TicTacToeGame::GameBuilder TicTacToeGame::GetBuilder()
 {
-	static GameBuilder gameBuilder;
-	return gameBuilder;
+	static GameBuilder game_builder;
+	return game_builder;
 }
 
 bool TicTacToeGame::GameBuilder::IsValid() const

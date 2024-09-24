@@ -13,6 +13,7 @@ public:
 	void SetBoard(const std::vector<std::vector<Cell>>& board);
 	size_t GetDimension() const;
 	void SetDimension(size_t dimension);
+	void Display() const;
 
 private:
 	std::vector<std::vector<Cell>> board_;

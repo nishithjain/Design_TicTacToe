@@ -1,7 +1,9 @@
+#include <iostream>
 #include <vector>
 #include <string>
 
 #include "Bot.h"
+#include "GameController.h"
 #include "Player.h"
 #include "TicTacToeGame.h"
 using namespace std;
@@ -14,21 +16,21 @@ int main()
 	players.push_back(make_shared<Player>("Nishith", '0', PlayerType::HUMAN));
 	players.push_back(make_shared<Bot>("Bot", 'X', BotDifficultyLevel::EASY));
 
-	const auto game = TicTacToeGame::GetBuilder()
-	                  .SetDimension(dimension)
-	                  .SetPlayers(players)
-	                  .Build();
+	const auto game = GameController::CreateGame(dimension, players);
 
-	while(game->GetGameStatus() == GameStatus::IN_PROGRESS)
+	while(GameController::GetGameStatus(game) == GameStatus::IN_PROGRESS)
+	{
+		std::cout << "This is the Current Board\n";
+		GameController::DisplayBoard(game);
+		GameController::ExecuteNextMove(game);
+
+	}
+
+	if(GameController::GetGameStatus(game) == GameStatus::DRAW)
 	{
 		
 	}
-
-	if(game->GetGameStatus() == GameStatus::DRAW)
-	{
-		
-	}
-	else if(game->GetGameStatus() == GameStatus::ENDED)
+	else if(GameController::GetGameStatus(game) == GameStatus::ENDED)
 	{
 		// game->GetWinner();
 	}

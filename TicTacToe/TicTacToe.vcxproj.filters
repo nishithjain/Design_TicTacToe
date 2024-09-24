@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Exceptions">
       <UniqueIdentifier>{3531b060-4788-493f-b959-107f04b3e8e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\controller">
+      <UniqueIdentifier>{9f83148e-5046-45aa-a528-4c256580cd1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\controller">
+      <UniqueIdentifier>{48bbcc62-67fa-42f0-904d-f71eed455e88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -81,6 +87,9 @@
     <ClInclude Include="headers\exceptions\PlayerCountException.h">
       <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="headers\controller\GameController.h">
+      <Filter>Header Files\controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\Bot.cpp">
@@ -98,9 +107,6 @@
     <ClCompile Include="source\core\Player.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="source\core\Source.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="source\core\TicTacToeGame.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -112,6 +118,12 @@
     </ClCompile>
     <ClCompile Include="source\exceptions\PlayerCountException.cpp">
       <Filter>Source Files\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\controller\GameController.cpp">
+      <Filter>Source Files\controller</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

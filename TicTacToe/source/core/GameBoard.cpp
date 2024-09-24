@@ -1,5 +1,8 @@
 #include "GameBoard.h"
 
+#include <iostream>
+#include <ostream>
+
 
 GameBoard::GameBoard(const size_t dimension) : dimension_(dimension)
 {
@@ -37,4 +40,23 @@ size_t GameBoard::GetDimension() const
 void GameBoard::SetDimension(const size_t dimension)
 {
 	dimension_ = dimension;
+}
+
+void GameBoard::Display() const
+{
+	for (size_t i = 0; i < board_.size(); i++)
+	{
+		for (size_t j = 0; j < board_.size(); j++)
+		{
+			if (board_[j][j].GetCellState() == CellState::EMPTY)
+			{
+				std::cout << "|  |";
+			}
+			else
+			{
+				std::cout << "| " << board_[i][j].GetPlayer().GetSymbol() << " |";
+			}
+		}
+		std::cout << "\n";
+	}
 }
