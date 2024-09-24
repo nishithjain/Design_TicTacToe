@@ -14,10 +14,10 @@ int main()
 	players.push_back(make_shared<Player>("Nishith", '0', PlayerType::HUMAN));
 	players.push_back(make_shared<Bot>("Bot", 'X', BotDifficultyLevel::EASY));
 
-	auto game = TicTacToeGame::GetBuilder()
-		.SetDimension(dimension)
-		.SetPlayers(players)
-		.Build();
+	const auto game = TicTacToeGame::GetBuilder()
+	                  .SetDimension(dimension)
+	                  .SetPlayers(players)
+	                  .Build();
 
 	while(game->GetGameStatus() == GameStatus::IN_PROGRESS)
 	{

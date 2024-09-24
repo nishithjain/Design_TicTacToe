@@ -15,6 +15,7 @@ public:
 	bool IsInitialized() const;
 
 	Player(std::string name, char symbol, PlayerType player_type);
+	Player();
 	virtual ~Player() = default;
 private:
 	std::string name_;

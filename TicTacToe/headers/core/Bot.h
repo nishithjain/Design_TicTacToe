@@ -2,7 +2,7 @@
 #include "BotDifficultyLevel.h"
 #include "Player.h"
 
-class Bot : public Player
+class Bot final : public Player
 {
 	BotDifficultyLevel bot_difficulty_level_ = BotDifficultyLevel::EASY;
 

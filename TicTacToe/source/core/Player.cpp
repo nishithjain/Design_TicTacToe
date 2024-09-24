@@ -40,3 +40,9 @@ Player::Player(std::string name, const char symbol, const PlayerType player_type
 	player_type_(player_type)
 {
 }
+
+Player::Player()
+	: name_("Unknown"), symbol_(' ')
+{
+
+}

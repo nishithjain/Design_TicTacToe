@@ -4,3 +4,5 @@ enum class PlayerType
 	HUMAN,
 	BOT,
 };
+
+
