@@ -3,17 +3,31 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_TicTacToeUI.h"
 
-class TicTacToeUI : public QMainWindow
+class TicTacToeUI final : public QMainWindow
 {
     Q_OBJECT
 
 public:
     TicTacToeUI(QWidget *parent = nullptr);
-    ~TicTacToeUI();
+    ~TicTacToeUI() = default;
 
 private:
-    Ui::TicTacToeUIClass ui;
+    Ui::TicTacToeUIClass ui_;
 
 private slots:
-    void onCellClicked();  // Slot for handling button clicks
+    void OnCell00Clicked();
+    void OnCell01Clicked();
+    void OnCell02Clicked();
+    void OnCell10Clicked();
+    void OnCell11Clicked();
+    void OnCell12Clicked();
+    void OnCell20Clicked();
+    void OnCell21Clicked();
+    void OnCell22Clicked();
+    void OnP1NameChanged(const QString& text);
+    void OnPlayerRadioToggled(bool checked);
+    void SetGameState(bool is_active) const;
+    void OnPlayButtonClicked();
+    void OnUndoButtonClicked();
+    void OnResetButtonClicked();
 };
