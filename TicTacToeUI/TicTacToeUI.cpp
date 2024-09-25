@@ -46,7 +46,7 @@ TicTacToeUI::TicTacToeUI(QWidget* parent) : QMainWindow(parent)
 
 void TicTacToeUI::OnP1SymbolChanged()
 {
-	const QString p1Symbol = ui_.p1SymbolCombo->currentText();
+	const QString p1_symbol = ui_.p1SymbolCombo->currentText();
 
 	// Re-add the previously selected symbol for Player 1 in Player 2's combo box
 	if (!prev_p1_symbol_.isEmpty()) 
@@ -55,18 +55,18 @@ void TicTacToeUI::OnP1SymbolChanged()
 	}
 
 	// Remove the newly selected symbol from Player 2's combo box
-	if (const int indexToRemove = ui_.p2SymbolCombo->findText(p1Symbol); indexToRemove != -1) 
+	if (const int index_to_remove = ui_.p2SymbolCombo->findText(p1_symbol); index_to_remove != -1) 
 	{
-		ui_.p2SymbolCombo->removeItem(indexToRemove);
+		ui_.p2SymbolCombo->removeItem(index_to_remove);
 	}
 
 	// Update the stored previous symbol
-	prev_p1_symbol_ = p1Symbol;
+	prev_p1_symbol_ = p1_symbol;
 }
 
 void TicTacToeUI::OnP2SymbolChanged()
 {
-	const QString p2Symbol = ui_.p2SymbolCombo->currentText();
+	const QString p2_symbol = ui_.p2SymbolCombo->currentText();
 
 	// Re-add the previously selected symbol for Player 2 in Player 1's combo box
 	if (!prev_p2_symbol_.isEmpty()) 
@@ -75,13 +75,13 @@ void TicTacToeUI::OnP2SymbolChanged()
 	}
 
 	// Remove the newly selected symbol from Player 1's combo box
-	if (const int indexToRemove = ui_.p1SymbolCombo->findText(p2Symbol); indexToRemove != -1) 
+	if (const int index_to_remove = ui_.p1SymbolCombo->findText(p2_symbol); index_to_remove != -1) 
 	{
-		ui_.p1SymbolCombo->removeItem(indexToRemove);
+		ui_.p1SymbolCombo->removeItem(index_to_remove);
 	}
 
 	// Update the stored previous symbol
-	prev_p2_symbol_ = p2Symbol;
+	prev_p2_symbol_ = p2_symbol;
 }
 
 void TicTacToeUI::OnP1NameChanged(const QString& text)
@@ -129,22 +129,55 @@ void TicTacToeUI::OnUndoButtonClicked() {}
 
 void TicTacToeUI::OnResetButtonClicked()
 {
+	RestoreState();
 	ResetUi();
 }
 
 void TicTacToeUI::ResetUi()
 {
 	SetGameState(false);  // Disable all the cells at the start
-
-	// Reset player-related UI components
-	ui_.p1NameLineEdit->setEnabled(true);
-	ui_.p1SymbolCombo->setEnabled(true);
 	ui_.InformationLineEdit->clear();
 }
 
 void TicTacToeUI::OnCellClicked(int row, int col)
 {
 	// Handle cell click based on row and col
+}
+
+void TicTacToeUI::CaptureState()
+{
+	current_state_.p1_name = ui_.p1NameLineEdit->text();
+	current_state_.p1_line_enabled = ui_.p1NameLineEdit->isEnabled();
+	current_state_.p1_symbol = ui_.p1SymbolCombo->currentText();
+	current_state_.p1_symbol_enabled = ui_.p1SymbolCombo->isEnabled();
+
+	current_state_.bot_selected = ui_.botRadioBtn->isChecked();
+	current_state_.bot_enabled = ui_.botRadioBtn->isEnabled();
+	current_state_.player_selected = ui_.playerRadioBtn->isChecked();
+	current_state_.player_enabled = ui_.playerRadioBtn->isEnabled();
+
+	current_state_.p2_name = ui_.p2NameLineEdit->text();
+	current_state_.p2_line_enabled = ui_.p2NameLineEdit->isEnabled();
+	current_state_.p2_symbol = ui_.p2SymbolCombo->currentText();
+	current_state_.p2_symbol_enabled = ui_.p2SymbolCombo->isEnabled();
+}
+
+void TicTacToeUI::RestoreState()
+{
+	ui_.p1NameLineEdit->setText(current_state_.p1_name);
+	ui_.p1NameLineEdit->setEnabled(current_state_.p1_line_enabled);
+	ui_.p1SymbolCombo->setCurrentText(current_state_.p1_symbol);
+	ui_.p1SymbolCombo->setEnabled(current_state_.p1_symbol_enabled);
+
+	ui_.botRadioBtn->setChecked(current_state_.bot_selected);
+	ui_.botRadioBtn->setEnabled(current_state_.bot_enabled);
+	ui_.playerRadioBtn->setChecked(current_state_.player_selected);
+	ui_.playerRadioBtn->setEnabled(current_state_.player_enabled);
+
+	ui_.p2NameLineEdit->setText(current_state_.p2_name);
+	ui_.p2NameLineEdit->setEnabled(current_state_.p2_line_enabled);
+	ui_.p2SymbolCombo->setCurrentText(current_state_.p2_symbol);
+	ui_.p2SymbolCombo->setEnabled(current_state_.p2_symbol_enabled);
 }
 
 void TicTacToeUI::OnCell00Clicked() { OnCellClicked(0, 0); }
@@ -173,25 +206,27 @@ std::tuple<QString, QString> TicTacToeUI::GetPlayer2NameAndSymbol() const
 	}
 	// Bot is selected, assign bot symbol
 	// Get Player 1's symbol
-	const QString p1Symbol = ui_.p1SymbolCombo->currentText(); 
+	const QString p1_symbol = ui_.p1SymbolCombo->currentText(); 
 
 	// Find a symbol for the bot that is different from Player 1's symbol
-	QString botSymbol;
+	QString bot_symbol;
 	for (int i = 0; i < ui_.p2SymbolCombo->count(); ++i)
 	{
-		if (QString symbol = ui_.p2SymbolCombo->itemText(i); symbol != p1Symbol)
+		if (QString symbol = ui_.p2SymbolCombo->itemText(i); symbol != p1_symbol)
 		{
-			botSymbol = symbol; // Select the first available symbol that is different
+			bot_symbol = symbol; // Select the first available symbol that is different
 			break; // Break once a valid symbol is found
 		}
 	}
 	// Return Bot's name and selected symbol
-	return { "Bot", botSymbol }; 
+	return { "Bot", bot_symbol }; 
 }
 
 void TicTacToeUI::OnPlayButtonClicked()
 {
+	CaptureState();
 	SetGameState(true);
+
 	ui_.p1NameLineEdit->setEnabled(false);
 	ui_.p1SymbolCombo->setEnabled(false);
 	ui_.botRadioBtn->setEnabled(false);
