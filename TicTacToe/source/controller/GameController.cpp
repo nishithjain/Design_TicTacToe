@@ -16,7 +16,7 @@ void GameController::Undo(const std::shared_ptr<TicTacToeGame>& game)
 
 void GameController::ExecuteNextMove(const std::shared_ptr<TicTacToeGame>& game)
 {
-	game.ExecuteNextMove();
+	//game.ExecuteNextMove();
 }
 
 Player GameController::GetWinner(const std::shared_ptr<TicTacToeGame>& game)
