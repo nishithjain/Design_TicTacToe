@@ -20,6 +20,14 @@ private:
     QString prev_p1_symbol_;
     QString prev_p2_symbol_;
 
+    struct PlayersInfo
+    {
+        std::tuple<QString, QString> player1_info;
+        std::tuple<QString, QString> player2_info;
+        std::tuple<QString, QString> current_player_info;
+    };
+    PlayersInfo player_info_;
+
     struct UiState
 	{
         QString p1_name;
@@ -40,6 +48,9 @@ private:
     UiState current_state_;
     void CaptureState();
     void RestoreState();
+    void SwitchPlayer();
+    [[nodiscard]] std::tuple<QString, QString> GetCurrentPlayerInfo() const;
+    void InitializePlayers();
 private slots:
     void OnCell00Clicked();
     void OnCell01Clicked();
@@ -54,6 +65,7 @@ private slots:
     std::tuple<QString, QString> GetPlayer2NameAndSymbol() const;
     void InformationLine(const QString& text) const;
     void Play();
+    static QString FormatPlayerInfo(const std::tuple<QString, QString>& player_info);
     void OnP1NameChanged(const QString& text);
     void OnPlayerRadioToggled(bool checked);
     void SetGameState(bool is_active) const;

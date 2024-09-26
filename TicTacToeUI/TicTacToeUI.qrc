@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/TicTacToeUI">
         <file>Resources/tic-tac-toe16X16.png</file>
+        <file>Resources/at.png</file>
+        <file>Resources/hash.png</file>
+        <file>Resources/o.png</file>
+        <file>Resources/x.png</file>
     </qresource>
 </RCC>

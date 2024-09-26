@@ -13,7 +13,7 @@
 
 QPushButton* TicTacToeUI::GetCell(const int row, const int col) const
 {
-	QPushButton* cells[3][3] = 
+	QPushButton* cells[3][3] =
 	{
 		{ui_.cell00, ui_.cell01, ui_.cell02},
 		{ui_.cell10, ui_.cell11, ui_.cell12},
@@ -31,9 +31,9 @@ TicTacToeUI::TicTacToeUI(QWidget* parent) : QMainWindow(parent)
 	ui_.frame->setFrameShadow(QFrame::Raised);
 	ui_.frame->setStyleSheet("QFrame { background-color: rgb(135, 206, 235); }");
 
-	for (int i = 0; i < 3; ++i) 
+	for (int i = 0; i < 3; ++i)
 	{
-		for (int j = 0; j < 3; ++j) 
+		for (int j = 0; j < 3; ++j)
 		{
 			connect(GetCell(i, j), &QPushButton::clicked, this,
 				[this, i, j]() { OnCellClicked(i, j); });
@@ -58,13 +58,13 @@ void TicTacToeUI::OnP1SymbolChanged()
 	const QString p1_symbol = ui_.p1SymbolCombo->currentText();
 
 	// Re-add the previously selected symbol for Player 1 in Player 2's combo box
-	if (!prev_p1_symbol_.isEmpty()) 
+	if (!prev_p1_symbol_.isEmpty())
 	{
 		ui_.p2SymbolCombo->addItem(prev_p1_symbol_);
 	}
 
 	// Remove the newly selected symbol from Player 2's combo box
-	if (const int index_to_remove = ui_.p2SymbolCombo->findText(p1_symbol); index_to_remove != -1) 
+	if (const int index_to_remove = ui_.p2SymbolCombo->findText(p1_symbol); index_to_remove != -1)
 	{
 		ui_.p2SymbolCombo->removeItem(index_to_remove);
 	}
@@ -78,13 +78,13 @@ void TicTacToeUI::OnP2SymbolChanged()
 	const QString p2_symbol = ui_.p2SymbolCombo->currentText();
 
 	// Re-add the previously selected symbol for Player 2 in Player 1's combo box
-	if (!prev_p2_symbol_.isEmpty()) 
+	if (!prev_p2_symbol_.isEmpty())
 	{
 		ui_.p1SymbolCombo->addItem(prev_p2_symbol_);
 	}
 
 	// Remove the newly selected symbol from Player 1's combo box
-	if (const int index_to_remove = ui_.p1SymbolCombo->findText(p2_symbol); index_to_remove != -1) 
+	if (const int index_to_remove = ui_.p1SymbolCombo->findText(p2_symbol); index_to_remove != -1)
 	{
 		ui_.p1SymbolCombo->removeItem(index_to_remove);
 	}
@@ -115,15 +115,15 @@ void TicTacToeUI::OnPlayerRadioToggled(const bool checked)
 
 void TicTacToeUI::SetGameState(const bool is_active) const
 {
-	for (int row = 0; row < 3; ++row) 
+	for (int row = 0; row < 3; ++row)
 	{
-		for (int col = 0; col < 3; ++col) 
+		for (int col = 0; col < 3; ++col)
 		{
 			QPushButton* cell = GetCell(row, col);
 			cell->setEnabled(is_active);
-			if (!is_active) 
+			if (!is_active)
 			{
-				cell->setText("");  // Clear the cell text when disabling
+				cell->setIcon(QIcon());
 			}
 		}
 	}
@@ -151,6 +151,48 @@ void TicTacToeUI::ResetUi()
 void TicTacToeUI::OnCellClicked(int row, int col)
 {
 	// Handle cell click based on row and col
+
+	QPushButton* clicked_button = GetCell(row, col);
+	if (clicked_button == nullptr)
+		return;
+
+	auto [player_name, symbol] = GetCurrentPlayerInfo();
+
+	// Set the icon based on the player's symbol
+	if (symbol == "#")
+	{
+		const QIcon icon(":/TicTacToeUI/Resources/hash.png");
+		clicked_button->setIcon(icon);
+	}
+	else if (symbol == "@")
+	{
+		const QIcon icon(":/TicTacToeUI/Resources/at.png");
+		clicked_button->setIcon(icon);
+	}
+	else if (symbol == "O")
+	{
+		const QIcon icon(":/TicTacToeUI/Resources/o.png");
+		clicked_button->setIcon(icon);
+	}
+	else if (symbol == "X")
+	{
+		const QIcon icon(":/TicTacToeUI/Resources/x.png");
+		clicked_button->setIcon(icon);
+	}
+
+	const int width = clicked_button->width() - 20;
+	const int height = clicked_button->height() - 20;
+
+	const QSize new_icon_size(width, height);
+
+	clicked_button->setIconSize(new_icon_size);
+	// Disable the button
+	clicked_button->setEnabled(false);
+
+	// Switch to the next player
+	SwitchPlayer();
+	const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
+	InformationLine(text);
 }
 
 void TicTacToeUI::CaptureState()
@@ -189,7 +231,34 @@ void TicTacToeUI::RestoreState()
 	ui_.p2SymbolCombo->setEnabled(current_state_.p2_symbol_enabled);
 }
 
-void TicTacToeUI::OnCell00Clicked() { OnCellClicked(0, 0); }
+void TicTacToeUI::SwitchPlayer()
+{
+	if (player_info_.current_player_info == player_info_.player1_info)
+	{
+		player_info_.current_player_info = player_info_.player2_info;
+	}
+	else
+	{
+		player_info_.current_player_info = player_info_.player1_info;
+	}
+}
+
+std::tuple<QString, QString> TicTacToeUI::GetCurrentPlayerInfo() const
+{
+	return player_info_.current_player_info;
+}
+
+void TicTacToeUI::InitializePlayers()
+{
+	player_info_.player1_info = GetPlayer1NameAndSymbol();
+	player_info_.player2_info = GetPlayer2NameAndSymbol();
+	player_info_.current_player_info = player_info_.player1_info;
+}
+
+void TicTacToeUI::OnCell00Clicked()
+{
+	
+}
 void TicTacToeUI::OnCell01Clicked() { OnCellClicked(0, 1); }
 void TicTacToeUI::OnCell02Clicked() { OnCellClicked(0, 2); }
 void TicTacToeUI::OnCell10Clicked() { OnCellClicked(1, 0); }
@@ -207,14 +276,14 @@ std::tuple<QString, QString> TicTacToeUI::GetPlayer1NameAndSymbol() const
 
 std::tuple<QString, QString> TicTacToeUI::GetPlayer2NameAndSymbol() const
 {
-	if (ui_.playerRadioBtn->isChecked()) 
+	if (ui_.playerRadioBtn->isChecked())
 	{
 		// Player 2 selected
 		return { ui_.p2NameLineEdit->text(), ui_.p2SymbolCombo->currentText() };
 	}
 	// Bot is selected, assign bot symbol
 	// Get Player 1's symbol
-	const QString p1_symbol = ui_.p1SymbolCombo->currentText(); 
+	const QString p1_symbol = ui_.p1SymbolCombo->currentText();
 
 	// Find a symbol for the bot that is different from Player 1's symbol
 	QString bot_symbol;
@@ -227,54 +296,62 @@ std::tuple<QString, QString> TicTacToeUI::GetPlayer2NameAndSymbol() const
 		}
 	}
 	// Return Bot's name and selected symbol
-	return { "Bot", bot_symbol }; 
+	return { "Bot", bot_symbol };
 }
 
 void TicTacToeUI::InformationLine(const QString& text) const
 {
 	ui_.InformationLineEdit->clear();
+
+
 	ui_.InformationLineEdit->setText(text);
 }
 
 void TicTacToeUI::Play()
 {
-	auto [p1_name, p1_symbol] = GetPlayer1NameAndSymbol();
-	auto [p2_name, p2_symbol] = GetPlayer2NameAndSymbol();
-
 	constexpr int dimension = 3;
 
 	ListOfPlayers players;
 
-	players.push_back(std::make_shared<Player>(p1_name.toStdString(), 
-		p1_symbol.toStdString().c_str()[0], PlayerType::HUMAN));
+	players.push_back(std::make_shared<Player>(std::get<0>(player_info_.player1_info).toStdString(),
+		std::get<1>(player_info_.player1_info).toStdString().c_str()[0], PlayerType::HUMAN));
 
 	if (ui_.botRadioBtn->isChecked())
 	{
-		players.push_back(std::make_shared<Bot>("Bot", p2_symbol.toStdString().c_str()[0],
+		players.push_back(std::make_shared<Bot>("Bot", std::get<1>(player_info_.player2_info).toStdString().c_str()[0],
 			BotDifficultyLevel::EASY));
 	}
 	else
 	{
-		players.push_back(std::make_shared<Player>(p2_name.toStdString(),
-			p2_name.toStdString().c_str()[0], PlayerType::HUMAN));
+		players.push_back(std::make_shared<Player>(std::get<0>(player_info_.player2_info).toStdString(),
+			std::get<1>(player_info_.player2_info).toStdString().c_str()[0], PlayerType::HUMAN));
 	}
 
-	auto game = GameController::CreateGame(dimension, players);
+	const auto game = GameController::CreateGame(dimension, players);
+
+	//while (GameController::GetGameStatus(game) == GameStatus::IN_PROGRESS)
+	//{
+
+	//}
 }
 
+QString TicTacToeUI::FormatPlayerInfo(const std::tuple<QString, QString>& player_info)
+{
+	return std::get<0>(player_info) + ": " + std::get<1>(player_info);
+}
 
 void TicTacToeUI::OnPlayButtonClicked()
 {
-	auto [p1_name, p1_symbol] = GetPlayer1NameAndSymbol();
-	auto [p2_name, p2_symbol] = GetPlayer2NameAndSymbol();
-	if(p2_name.isEmpty())
+	InitializePlayers();
+
+	if (std::get<0>(player_info_.player2_info).isEmpty())
 	{
 		QMessageBox::warning(this, "Invalid Input",
-		   "Please enter a valid name for player 2.");
+			"Please enter a valid name for player 2.");
 		return;
 	}
 
-	if(p2_name.toLower() == "bot")
+	if (std::get<0>(player_info_.player2_info).toLower() == "bot")
 	{
 		QMessageBox::warning(this, "Invalid Input",
 			"Player 2 name cannot be Bot!");
@@ -291,8 +368,8 @@ void TicTacToeUI::OnPlayButtonClicked()
 	ui_.p2NameLineEdit->setEnabled(false);
 	ui_.p2SymbolCombo->setEnabled(false);
 
-	const auto text = p1_name + ": " + p1_symbol + "\t" + p2_name + ": " + p2_symbol;
 
+	const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
 	InformationLine(text);
 	Play();
 }
