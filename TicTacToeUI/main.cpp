@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setWindowIcon(QIcon(":/TicTacToeUI/Resources/tic-tac-toe16X16.png"));
     TicTacToeUI w;
 
     w.show();

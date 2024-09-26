@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="TicTacToeUI">
+    <qresource prefix="/TicTacToeUI">
+        <file>Resources/tic-tac-toe16X16.png</file>
     </qresource>
 </RCC>

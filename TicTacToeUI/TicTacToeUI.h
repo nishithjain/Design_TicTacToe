@@ -52,6 +52,8 @@ private slots:
     void OnCell22Clicked();
     [[nodiscard]] std::tuple<QString, QString> GetPlayer1NameAndSymbol() const;
     std::tuple<QString, QString> GetPlayer2NameAndSymbol() const;
+    void InformationLine(const QString& text) const;
+    void Play();
     void OnP1NameChanged(const QString& text);
     void OnPlayerRadioToggled(bool checked);
     void SetGameState(bool is_active) const;

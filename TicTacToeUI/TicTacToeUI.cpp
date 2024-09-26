@@ -2,6 +2,14 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QFrame>
+#include <QMessageBox>
+#include <QGroupBox>
+#include <Player.h>
+
+#include "Bot.h"
+#include "TicTacToeGame.h"
+#include "../TicTacToe/headers/controller/GameController.h"
+
 
 QPushButton* TicTacToeUI::GetCell(const int row, const int col) const
 {
@@ -17,6 +25,7 @@ QPushButton* TicTacToeUI::GetCell(const int row, const int col) const
 TicTacToeUI::TicTacToeUI(QWidget* parent) : QMainWindow(parent)
 {
 	ui_.setupUi(this);
+	OnP1SymbolChanged();
 
 	ui_.frame->setFrameStyle(QFrame::StyledPanel);
 	ui_.frame->setFrameShadow(QFrame::Raised);
@@ -190,7 +199,6 @@ void TicTacToeUI::OnCell20Clicked() { OnCellClicked(2, 0); }
 void TicTacToeUI::OnCell21Clicked() { OnCellClicked(2, 1); }
 void TicTacToeUI::OnCell22Clicked() { OnCellClicked(2, 2); }
 
-
 std::tuple<QString, QString> TicTacToeUI::GetPlayer1NameAndSymbol() const
 {
 	// Returns the current symbol for Player 1
@@ -222,8 +230,57 @@ std::tuple<QString, QString> TicTacToeUI::GetPlayer2NameAndSymbol() const
 	return { "Bot", bot_symbol }; 
 }
 
+void TicTacToeUI::InformationLine(const QString& text) const
+{
+	ui_.InformationLineEdit->clear();
+	ui_.InformationLineEdit->setText(text);
+}
+
+void TicTacToeUI::Play()
+{
+	auto [p1_name, p1_symbol] = GetPlayer1NameAndSymbol();
+	auto [p2_name, p2_symbol] = GetPlayer2NameAndSymbol();
+
+	constexpr int dimension = 3;
+
+	ListOfPlayers players;
+
+	players.push_back(std::make_shared<Player>(p1_name.toStdString(), 
+		p1_symbol.toStdString().c_str()[0], PlayerType::HUMAN));
+
+	if (ui_.botRadioBtn->isChecked())
+	{
+		players.push_back(std::make_shared<Bot>("Bot", p2_symbol.toStdString().c_str()[0],
+			BotDifficultyLevel::EASY));
+	}
+	else
+	{
+		players.push_back(std::make_shared<Player>(p2_name.toStdString(),
+			p2_name.toStdString().c_str()[0], PlayerType::HUMAN));
+	}
+
+	auto game = GameController::CreateGame(dimension, players);
+}
+
+
 void TicTacToeUI::OnPlayButtonClicked()
 {
+	auto [p1_name, p1_symbol] = GetPlayer1NameAndSymbol();
+	auto [p2_name, p2_symbol] = GetPlayer2NameAndSymbol();
+	if(p2_name.isEmpty())
+	{
+		QMessageBox::warning(this, "Invalid Input",
+		   "Please enter a valid name for player 2.");
+		return;
+	}
+
+	if(p2_name.toLower() == "bot")
+	{
+		QMessageBox::warning(this, "Invalid Input",
+			"Player 2 name cannot be Bot!");
+		return;
+	}
+
 	CaptureState();
 	SetGameState(true);
 
@@ -234,10 +291,8 @@ void TicTacToeUI::OnPlayButtonClicked()
 	ui_.p2NameLineEdit->setEnabled(false);
 	ui_.p2SymbolCombo->setEnabled(false);
 
-	auto [p1_name, p1_symbol] = GetPlayer1NameAndSymbol();
-	auto [p2_name, p2_symbol] = GetPlayer2NameAndSymbol();
-
 	const auto text = p1_name + ": " + p1_symbol + "\t" + p2_name + ": " + p2_symbol;
 
-	ui_.InformationLineEdit->setText(text);
+	InformationLine(text);
+	Play();
 }
