@@ -202,8 +202,12 @@ void TicTacToeUi::OnCellClicked(const int row, const int col)
 		if(GameController::GetGameStatus(game_) == GameStatus::ENDED)
 		{
 			const auto winner = GameController::GetWinner(game_);
-			QMessageBox::warning(this, "We have a WINNER",
-				(winner.GetName() + " Has won the game").data());
+			const QString text(((winner.GetName() + " won the game!!!").data()));
+
+			InformationLine(text);
+			QMessageBox::warning(this, "We have a WINNER", text);
+
+			RestoreState();
 			ResetUi();
 		}
 
@@ -211,8 +215,10 @@ void TicTacToeUi::OnCellClicked(const int row, const int col)
 		SwitchPlayer();
 		const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
 		InformationLine(text);
-		
+
+
 	}
+
 	else if(game_status == GameStatus::DRAW)
 	{
 		
