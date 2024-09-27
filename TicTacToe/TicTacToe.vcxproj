@@ -132,6 +132,7 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameWinningStrategy.h" />
     <ClInclude Include="headers\controller\GameController.h" />
     <ClInclude Include="headers\core\Bot.h" />
     <ClInclude Include="headers\core\BotDifficultyLevel.h" />
@@ -146,8 +147,10 @@
     <ClInclude Include="headers\exceptions\BoardDimensionException.h" />
     <ClInclude Include="headers\exceptions\DuplicatePlayerSymbolException.h" />
     <ClInclude Include="headers\exceptions\PlayerCountException.h" />
+    <ClInclude Include="OrderOneGameWinningStrategy.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="OrderOneGameWinningStrategy.cpp" />
     <ClCompile Include="source\controller\GameController.cpp" />
     <ClCompile Include="source\core\Bot.cpp" />
     <ClCompile Include="source\core\Cell.cpp" />

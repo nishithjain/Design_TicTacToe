@@ -6,8 +6,9 @@
 #include "GameStatus.h"
 #include "Move.h"
 #include "Player.h"
+#include "../../GameWinningStrategy.h"
 
-using ListOfPlayers = std::vector<std::shared_ptr<Player>>;
+	using ListOfPlayers = std::vector<std::shared_ptr<Player>>;
 class TicTacToeGame
 {
 	GameBoard board_;
@@ -16,8 +17,10 @@ class TicTacToeGame
 	int next_player_index_ = 0;
 	GameStatus game_status_ = GameStatus::ENDED;
 	Player winner_;
-
+	std::shared_ptr<GameWinningStrategy> game_winning_strategy_ = nullptr;
 public:
+	std::shared_ptr<GameWinningStrategy> GetGameWinningStrategy() const;
+	void SetGameWinningStrategy(const std::shared_ptr<GameWinningStrategy>& game_winning_strategy);
 	Player GetWinner() const;
 	void SetWinner(const Player& winner);
 	ListOfPlayers GetPlayers1() const;
@@ -29,7 +32,7 @@ public:
 	GameStatus GetGameStatus() const;
 	void SetGameStatus(GameStatus game_status);
 	void DisplayBoard() const;
-	void ExecuteNextMove();
+	void ExecuteNextMove(int row, int column);
 
 	explicit TicTacToeGame(size_t dimension, ListOfPlayers players);
 

@@ -10,7 +10,7 @@ public:
 
 	static void Undo(const std::shared_ptr<TicTacToeGame>& game);
 
-	static void ExecuteNextMove(const std::shared_ptr<TicTacToeGame>& game);
+	static void ExecuteNextMove(const std::shared_ptr<TicTacToeGame>& game, int row, int column);
 
 	static Player GetWinner(const std::shared_ptr<TicTacToeGame>& game);
 

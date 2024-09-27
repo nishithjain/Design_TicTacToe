@@ -136,16 +136,18 @@ void TicTacToeUi::SetGameState(const bool is_active) const
 
 void TicTacToeUi::OnUndoButtonClicked() {}
 
-void TicTacToeUi::OnResetButtonClicked() const
+void TicTacToeUi::OnResetButtonClicked()
 {
 	RestoreState();
 	ResetUi();
 }
 
-void TicTacToeUi::ResetUi() const
+void TicTacToeUi::ResetUi()
 {
 	SetGameState(false);  // Disable all the cells at the start
 	ui_.InformationLineEdit->clear();
+	game_ = nullptr;
+	next_player_index_ = 0;
 }
 
 void TicTacToeUi::UpdateCellIcon(QPushButton* clicked_button, const QString& symbol)
@@ -190,14 +192,37 @@ void TicTacToeUi::OnCellClicked(const int row, const int col)
 	if (clicked_button == nullptr)
 		return;
 
-	auto [player_name, symbol] = GetCurrentPlayerInfo();
+	if (const auto game_status = GameController::GetGameStatus(game_); 
+		game_status == GameStatus::IN_PROGRESS)
+	{
+		auto [player_name, symbol] = GetCurrentPlayerInfo();
+		UpdateCellIcon(clicked_button, symbol);
+		GameController::ExecuteNextMove(game_, row, col);
 
-	UpdateCellIcon(clicked_button, symbol);
+		if(GameController::GetGameStatus(game_) == GameStatus::ENDED)
+		{
+			const auto winner = GameController::GetWinner(game_);
+			QMessageBox::warning(this, "We have a WINNER",
+				(winner.GetName() + " Has won the game").data());
+			ResetUi();
+		}
 
-	// Switch to the next player
-	SwitchPlayer();
-	const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
-	InformationLine(text);
+		// Switch to the next player
+		SwitchPlayer();
+		const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
+		InformationLine(text);
+		
+	}
+	else if(game_status == GameStatus::DRAW)
+	{
+		
+	}
+	else
+	{
+		const auto winner = GameController::GetWinner(game_);
+		QMessageBox::warning(this, "We have a WINNER",
+			(winner.GetName() + " Has won the game").data());
+	}
 }
 
 void TicTacToeUi::CaptureState()
@@ -241,10 +266,12 @@ void TicTacToeUi::SwitchPlayer()
 	if (player_info_.current_player_info == player_info_.player1_info)
 	{
 		player_info_.current_player_info = player_info_.player2_info;
+		next_player_index_ = 1;
 	}
 	else
 	{
 		player_info_.current_player_info = player_info_.player1_info;
+		next_player_index_ = 0;
 	}
 }
 
@@ -299,7 +326,7 @@ void TicTacToeUi::InformationLine(const QString& text) const
 	ui_.InformationLineEdit->setText(text);
 }
 
-void TicTacToeUi::Play() const
+void TicTacToeUi::Play()
 {
 	constexpr int dimension = 3;
 
@@ -319,7 +346,7 @@ void TicTacToeUi::Play() const
 			std::get<1>(player_info_.player2_info).toStdString().c_str()[0], PlayerType::HUMAN));
 	}
 
-	const auto game = GameController::CreateGame(dimension, players);
+	game_ = GameController::CreateGame(dimension, players);
 }
 
 QString TicTacToeUi::FormatPlayerInfo(const std::tuple<QString, QString>& player_info)

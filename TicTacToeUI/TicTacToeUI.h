@@ -5,6 +5,8 @@
 #include "ui_TicTacToeUI.h"
 #include <tuple>
 
+#include "TicTacToeGame.h"
+
 class TicTacToeUi final : public QMainWindow
 {
     Q_OBJECT
@@ -52,20 +54,22 @@ private:
     [[nodiscard]] std::tuple<QString, QString> GetPlayer1NameAndSymbol() const;
     [[nodiscard]] std::tuple<QString, QString> GetPlayer2NameAndSymbol() const;
     void InformationLine(const QString& text) const;
-    void Play() const;
+    void Play();
     static QString FormatPlayerInfo(const std::tuple<QString, QString>& player_info);
     void OnP1NameChanged(const QString& text) const;
     void OnPlayerRadioToggled(bool checked) const;
     void SetGameState(bool is_active) const;
     void OnPlayButtonClicked();
     static void OnUndoButtonClicked();
-    void OnResetButtonClicked() const;
-    void ResetUi() const;
+    void OnResetButtonClicked();
+    void ResetUi();
     static void UpdateCellIcon(QPushButton* clicked_button, const QString& symbol);
     void OnP1SymbolChanged();
     void OnP2SymbolChanged();
     [[nodiscard]] QPushButton* GetCell(int row, int col) const;
 
+    std::shared_ptr<TicTacToeGame> game_;
+    int next_player_index_ = 0;
 private slots:
     void OnCellClicked(int row, int col);
 };

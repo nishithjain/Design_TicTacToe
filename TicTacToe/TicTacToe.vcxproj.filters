@@ -90,6 +90,12 @@
     <ClInclude Include="headers\controller\GameController.h">
       <Filter>Header Files\controller</Filter>
     </ClInclude>
+    <ClInclude Include="GameWinningStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderOneGameWinningStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\Bot.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="source\controller\GameController.cpp">
       <Filter>Source Files\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderOneGameWinningStrategy.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

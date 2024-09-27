@@ -7,6 +7,17 @@
 #include "BoardDimensionException.h"
 #include "DuplicatePlayerSymbolException.h"
 #include "PlayerCountException.h"
+#include "../../OrderOneGameWinningStrategy.h"
+
+std::shared_ptr<GameWinningStrategy> TicTacToeGame::GetGameWinningStrategy() const
+{
+	return game_winning_strategy_;
+}
+
+void TicTacToeGame::SetGameWinningStrategy(const std::shared_ptr<GameWinningStrategy>& game_winning_strategy)
+{
+	game_winning_strategy_ = game_winning_strategy;
+}
 
 Player TicTacToeGame::GetWinner() const
 {
@@ -63,11 +74,30 @@ void TicTacToeGame::DisplayBoard() const
 	board_.Display();
 }
 
-void TicTacToeGame::ExecuteNextMove()
+void TicTacToeGame::ExecuteNextMove(const int row, const int column) 
 {
-	// Step 1: Player should be able to decide the move.
-	// Step 2: Check the validation of the move. If move is valid, then make the move or else reject it.
+	if(board_.GetBoard()[row][column].GetCellState() == CellState::EMPTY)
+	{
+		auto current_cell = board_.GetBoard()[row][column];
+		const auto player_to_move = *players_[next_player_index_];
 
+		current_cell.SetCellState(CellState::FILLED);
+		current_cell.SetPlayer(player_to_move);
+		const Move current_move(current_cell, player_to_move);
+		moves_.push_back(current_move);
+
+		if(game_winning_strategy_->CheckWinner(board_, current_move))
+		{
+			game_status_ = GameStatus::ENDED;
+			winner_ = player_to_move;
+		}
+
+
+		next_player_index_ += 1;
+		next_player_index_ %= players_.size();
+
+
+	}
 }
 
 TicTacToeGame::TicTacToeGame(const size_t dimension, ListOfPlayers players) :
@@ -146,6 +176,7 @@ std::shared_ptr<TicTacToeGame> TicTacToeGame::GameBuilder::Build() const
 			auto game = std::make_shared<TicTacToeGame>(dimension_, players_);
 			game->game_status_ = GameStatus::IN_PROGRESS;
 			game->next_player_index_ = 0;
+			game->SetGameWinningStrategy(std::make_shared<OrderOneGameWinningStrategy>(dimension_));
 			return game;
 		}
 	}
