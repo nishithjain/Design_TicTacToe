@@ -11,7 +11,7 @@
 #include "../TicTacToe/headers/controller/GameController.h"
 
 
-QPushButton* TicTacToeUI::GetCell(const int row, const int col) const
+QPushButton* TicTacToeUi::GetCell(const int row, const int col) const
 {
 	QPushButton* cells[3][3] =
 	{
@@ -22,7 +22,7 @@ QPushButton* TicTacToeUI::GetCell(const int row, const int col) const
 	return cells[row][col];
 }
 
-TicTacToeUI::TicTacToeUI(QWidget* parent) : QMainWindow(parent)
+TicTacToeUi::TicTacToeUi(QWidget* parent) : QMainWindow(parent)
 {
 	ui_.setupUi(this);
 	OnP1SymbolChanged();
@@ -41,19 +41,19 @@ TicTacToeUI::TicTacToeUI(QWidget* parent) : QMainWindow(parent)
 	}
 
 	// Connect other UI elements
-	connect(ui_.p1NameLineEdit, &QLineEdit::textChanged, this, &TicTacToeUI::OnP1NameChanged);
-	connect(ui_.playerRadioBtn, &QRadioButton::toggled, this, &TicTacToeUI::OnPlayerRadioToggled);
-	connect(ui_.playButton, &QPushButton::clicked, this, &TicTacToeUI::OnPlayButtonClicked);
-	connect(ui_.undoButton, &QPushButton::clicked, this, &TicTacToeUI::OnUndoButtonClicked);
-	connect(ui_.gameResetButton, &QPushButton::clicked, this, &TicTacToeUI::OnResetButtonClicked);
-	connect(ui_.p1SymbolCombo, &QComboBox::currentTextChanged, this, &TicTacToeUI::OnP1SymbolChanged);
-	connect(ui_.p2SymbolCombo, &QComboBox::currentTextChanged, this, &TicTacToeUI::OnP2SymbolChanged);
+	connect(ui_.p1NameLineEdit, &QLineEdit::textChanged, this, &TicTacToeUi::OnP1NameChanged);
+	connect(ui_.playerRadioBtn, &QRadioButton::toggled, this, &TicTacToeUi::OnPlayerRadioToggled);
+	connect(ui_.playButton, &QPushButton::clicked, this, &TicTacToeUi::OnPlayButtonClicked);
+	connect(ui_.undoButton, &QPushButton::clicked, this, &TicTacToeUi::OnUndoButtonClicked);
+	connect(ui_.gameResetButton, &QPushButton::clicked, this, &TicTacToeUi::OnResetButtonClicked);
+	connect(ui_.p1SymbolCombo, &QComboBox::currentTextChanged, this, &TicTacToeUi::OnP1SymbolChanged);
+	connect(ui_.p2SymbolCombo, &QComboBox::currentTextChanged, this, &TicTacToeUi::OnP2SymbolChanged);
 
 	// Initialize the UI to the starting state
 	ResetUi();
 }
 
-void TicTacToeUI::OnP1SymbolChanged()
+void TicTacToeUi::OnP1SymbolChanged()
 {
 	const QString p1_symbol = ui_.p1SymbolCombo->currentText();
 
@@ -73,7 +73,7 @@ void TicTacToeUI::OnP1SymbolChanged()
 	prev_p1_symbol_ = p1_symbol;
 }
 
-void TicTacToeUI::OnP2SymbolChanged()
+void TicTacToeUi::OnP2SymbolChanged()
 {
 	const QString p2_symbol = ui_.p2SymbolCombo->currentText();
 
@@ -93,7 +93,7 @@ void TicTacToeUI::OnP2SymbolChanged()
 	prev_p2_symbol_ = p2_symbol;
 }
 
-void TicTacToeUI::OnP1NameChanged(const QString& text)
+void TicTacToeUi::OnP1NameChanged(const QString& text) const
 {
 	const bool is_not_empty = !text.isEmpty();
 
@@ -104,7 +104,7 @@ void TicTacToeUI::OnP1NameChanged(const QString& text)
 	ui_.playButton->setEnabled(is_not_empty);
 }
 
-void TicTacToeUI::OnPlayerRadioToggled(const bool checked)
+void TicTacToeUi::OnPlayerRadioToggled(const bool checked) const
 {
 	// Enable the second player elements if playerRadioBtn is checked
 	ui_.p2NameLabel->setEnabled(checked);
@@ -113,7 +113,7 @@ void TicTacToeUI::OnPlayerRadioToggled(const bool checked)
 	ui_.p2SymbolCombo->setEnabled(checked);
 }
 
-void TicTacToeUI::SetGameState(const bool is_active) const
+void TicTacToeUi::SetGameState(const bool is_active) const
 {
 	for (int row = 0; row < 3; ++row)
 	{
@@ -134,30 +134,22 @@ void TicTacToeUI::SetGameState(const bool is_active) const
 	ui_.playButton->setEnabled(!is_active);  // Play button is disabled when the game is active
 }
 
-void TicTacToeUI::OnUndoButtonClicked() {}
+void TicTacToeUi::OnUndoButtonClicked() {}
 
-void TicTacToeUI::OnResetButtonClicked()
+void TicTacToeUi::OnResetButtonClicked() const
 {
 	RestoreState();
 	ResetUi();
 }
 
-void TicTacToeUI::ResetUi()
+void TicTacToeUi::ResetUi() const
 {
 	SetGameState(false);  // Disable all the cells at the start
 	ui_.InformationLineEdit->clear();
 }
 
-void TicTacToeUI::OnCellClicked(int row, int col)
+void TicTacToeUi::UpdateCellIcon(QPushButton* clicked_button, const QString& symbol)
 {
-	// Handle cell click based on row and col
-
-	QPushButton* clicked_button = GetCell(row, col);
-	if (clicked_button == nullptr)
-		return;
-
-	auto [player_name, symbol] = GetCurrentPlayerInfo();
-
 	// Set the icon based on the player's symbol
 	if (symbol == "#")
 	{
@@ -188,6 +180,19 @@ void TicTacToeUI::OnCellClicked(int row, int col)
 	clicked_button->setIconSize(new_icon_size);
 	// Disable the button
 	clicked_button->setEnabled(false);
+}
+
+void TicTacToeUi::OnCellClicked(const int row, const int col)
+{
+	// Handle cell click based on row and col
+
+	QPushButton* clicked_button = GetCell(row, col);
+	if (clicked_button == nullptr)
+		return;
+
+	auto [player_name, symbol] = GetCurrentPlayerInfo();
+
+	UpdateCellIcon(clicked_button, symbol);
 
 	// Switch to the next player
 	SwitchPlayer();
@@ -195,7 +200,7 @@ void TicTacToeUI::OnCellClicked(int row, int col)
 	InformationLine(text);
 }
 
-void TicTacToeUI::CaptureState()
+void TicTacToeUi::CaptureState()
 {
 	current_state_.p1_name = ui_.p1NameLineEdit->text();
 	current_state_.p1_line_enabled = ui_.p1NameLineEdit->isEnabled();
@@ -213,7 +218,7 @@ void TicTacToeUI::CaptureState()
 	current_state_.p2_symbol_enabled = ui_.p2SymbolCombo->isEnabled();
 }
 
-void TicTacToeUI::RestoreState()
+void TicTacToeUi::RestoreState() const
 {
 	ui_.p1NameLineEdit->setText(current_state_.p1_name);
 	ui_.p1NameLineEdit->setEnabled(current_state_.p1_line_enabled);
@@ -231,7 +236,7 @@ void TicTacToeUI::RestoreState()
 	ui_.p2SymbolCombo->setEnabled(current_state_.p2_symbol_enabled);
 }
 
-void TicTacToeUI::SwitchPlayer()
+void TicTacToeUi::SwitchPlayer()
 {
 	if (player_info_.current_player_info == player_info_.player1_info)
 	{
@@ -243,38 +248,25 @@ void TicTacToeUI::SwitchPlayer()
 	}
 }
 
-std::tuple<QString, QString> TicTacToeUI::GetCurrentPlayerInfo() const
+std::tuple<QString, QString> TicTacToeUi::GetCurrentPlayerInfo() const
 {
 	return player_info_.current_player_info;
 }
 
-void TicTacToeUI::InitializePlayers()
+void TicTacToeUi::InitializePlayers()
 {
 	player_info_.player1_info = GetPlayer1NameAndSymbol();
 	player_info_.player2_info = GetPlayer2NameAndSymbol();
 	player_info_.current_player_info = player_info_.player1_info;
 }
 
-void TicTacToeUI::OnCell00Clicked()
-{
-	
-}
-void TicTacToeUI::OnCell01Clicked() { OnCellClicked(0, 1); }
-void TicTacToeUI::OnCell02Clicked() { OnCellClicked(0, 2); }
-void TicTacToeUI::OnCell10Clicked() { OnCellClicked(1, 0); }
-void TicTacToeUI::OnCell11Clicked() { OnCellClicked(1, 1); }
-void TicTacToeUI::OnCell12Clicked() { OnCellClicked(1, 2); }
-void TicTacToeUI::OnCell20Clicked() { OnCellClicked(2, 0); }
-void TicTacToeUI::OnCell21Clicked() { OnCellClicked(2, 1); }
-void TicTacToeUI::OnCell22Clicked() { OnCellClicked(2, 2); }
-
-std::tuple<QString, QString> TicTacToeUI::GetPlayer1NameAndSymbol() const
+std::tuple<QString, QString> TicTacToeUi::GetPlayer1NameAndSymbol() const
 {
 	// Returns the current symbol for Player 1
 	return { ui_.p1NameLineEdit->text(), ui_.p1SymbolCombo->currentText() };
 }
 
-std::tuple<QString, QString> TicTacToeUI::GetPlayer2NameAndSymbol() const
+std::tuple<QString, QString> TicTacToeUi::GetPlayer2NameAndSymbol() const
 {
 	if (ui_.playerRadioBtn->isChecked())
 	{
@@ -299,7 +291,7 @@ std::tuple<QString, QString> TicTacToeUI::GetPlayer2NameAndSymbol() const
 	return { "Bot", bot_symbol };
 }
 
-void TicTacToeUI::InformationLine(const QString& text) const
+void TicTacToeUi::InformationLine(const QString& text) const
 {
 	ui_.InformationLineEdit->clear();
 
@@ -307,7 +299,7 @@ void TicTacToeUI::InformationLine(const QString& text) const
 	ui_.InformationLineEdit->setText(text);
 }
 
-void TicTacToeUI::Play()
+void TicTacToeUi::Play() const
 {
 	constexpr int dimension = 3;
 
@@ -328,30 +320,27 @@ void TicTacToeUI::Play()
 	}
 
 	const auto game = GameController::CreateGame(dimension, players);
-
-	//while (GameController::GetGameStatus(game) == GameStatus::IN_PROGRESS)
-	//{
-
-	//}
 }
 
-QString TicTacToeUI::FormatPlayerInfo(const std::tuple<QString, QString>& player_info)
+QString TicTacToeUi::FormatPlayerInfo(const std::tuple<QString, QString>& player_info)
 {
 	return std::get<0>(player_info) + ": " + std::get<1>(player_info);
 }
 
-void TicTacToeUI::OnPlayButtonClicked()
+void TicTacToeUi::OnPlayButtonClicked()
 {
 	InitializePlayers();
 
-	if (std::get<0>(player_info_.player2_info).isEmpty())
+	auto [player2_name, player2_symbol] = GetPlayer2NameAndSymbol();
+
+	if (player2_name.isEmpty())
 	{
 		QMessageBox::warning(this, "Invalid Input",
 			"Please enter a valid name for player 2.");
 		return;
 	}
 
-	if (std::get<0>(player_info_.player2_info).toLower() == "bot")
+	if (!ui_.botRadioBtn->isChecked() && player2_name.toLower().compare("bot") == 0)
 	{
 		QMessageBox::warning(this, "Invalid Input",
 			"Player 2 name cannot be Bot!");

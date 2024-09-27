@@ -1,19 +1,17 @@
 #pragma once
 
+#include <QPushButton>
 #include <QtWidgets/QMainWindow>
 #include "ui_TicTacToeUI.h"
 #include <tuple>
 
-class TicTacToeUI final : public QMainWindow
+class TicTacToeUi final : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    QPushButton* GetCell(int row, int col) const;
-    TicTacToeUI(QWidget *parent = nullptr);
-    void OnP1SymbolChanged();
-    void OnP2SymbolChanged();
-    ~TicTacToeUI() override = default;
+    explicit TicTacToeUi(QWidget *parent = nullptr);
+    ~TicTacToeUi() override = default;
 
 private:
     Ui::TicTacToeUIClass ui_;
@@ -47,31 +45,27 @@ private:
     };
     UiState current_state_;
     void CaptureState();
-    void RestoreState();
+    void RestoreState() const;
     void SwitchPlayer();
-    [[nodiscard]] std::tuple<QString, QString> GetCurrentPlayerInfo() const;
     void InitializePlayers();
-private slots:
-    void OnCell00Clicked();
-    void OnCell01Clicked();
-    void OnCell02Clicked();
-    void OnCell10Clicked();
-    void OnCell11Clicked();
-    void OnCell12Clicked();
-    void OnCell20Clicked();
-    void OnCell21Clicked();
-    void OnCell22Clicked();
+    [[nodiscard]] std::tuple<QString, QString> GetCurrentPlayerInfo() const;
     [[nodiscard]] std::tuple<QString, QString> GetPlayer1NameAndSymbol() const;
-    std::tuple<QString, QString> GetPlayer2NameAndSymbol() const;
+    [[nodiscard]] std::tuple<QString, QString> GetPlayer2NameAndSymbol() const;
     void InformationLine(const QString& text) const;
-    void Play();
+    void Play() const;
     static QString FormatPlayerInfo(const std::tuple<QString, QString>& player_info);
-    void OnP1NameChanged(const QString& text);
-    void OnPlayerRadioToggled(bool checked);
+    void OnP1NameChanged(const QString& text) const;
+    void OnPlayerRadioToggled(bool checked) const;
     void SetGameState(bool is_active) const;
     void OnPlayButtonClicked();
-    void OnUndoButtonClicked();
-    void OnResetButtonClicked();
-    void ResetUi();
+    static void OnUndoButtonClicked();
+    void OnResetButtonClicked() const;
+    void ResetUi() const;
+    static void UpdateCellIcon(QPushButton* clicked_button, const QString& symbol);
+    void OnP1SymbolChanged();
+    void OnP2SymbolChanged();
+    [[nodiscard]] QPushButton* GetCell(int row, int col) const;
+
+private slots:
     void OnCellClicked(int row, int col);
 };
