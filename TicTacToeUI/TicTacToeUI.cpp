@@ -191,14 +191,13 @@ void TicTacToeUi::OnCellClicked(const int row, const int col)
 	QPushButton* clicked_button = GetCell(row, col);
 	if (clicked_button == nullptr)
 		return;
-
-	if (const auto game_status = GameController::GetGameStatus(game_); 
-		game_status == GameStatus::IN_PROGRESS)
+	const auto game_status = GameController::GetGameStatus(game_);
+	if (game_status == GameStatus::IN_PROGRESS)
 	{
 		auto [player_name, symbol] = GetCurrentPlayerInfo();
 		UpdateCellIcon(clicked_button, symbol);
 		GameController::ExecuteNextMove(game_, row, col);
-
+		UpdateBoard();
 		if(GameController::GetGameStatus(game_) == GameStatus::ENDED)
 		{
 			const auto winner = GameController::GetWinner(game_);
@@ -209,25 +208,48 @@ void TicTacToeUi::OnCellClicked(const int row, const int col)
 
 			RestoreState();
 			ResetUi();
+			return;
 		}
 
-		// Switch to the next player
-		SwitchPlayer();
-		const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
-		InformationLine(text);
-
-
+		if (!ui_.botRadioBtn->isChecked())
+		{
+			SwitchPlayer();
+			const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
+			InformationLine(text);
+		}
 	}
-
-	else if(game_status == GameStatus::DRAW)
+	if(GameController::GetGameStatus(game_) == GameStatus::DRAW)
 	{
-		
+		QMessageBox::warning(this, "It's a DRAW",
+			"Game ended in a DRAW");
+		RestoreState();
+		ResetUi();
 	}
-	else
+	//else if (game_status == GameStatus::ENDED)
+	//{
+	//	const auto winner = GameController::GetWinner(game_);
+	//	QMessageBox::warning(this, "We have a WINNER",
+	//		(winner.GetName() + " Has won the game").data());
+	//}
+}
+
+void TicTacToeUi::UpdateBoard() const
+{
+	const auto board = game_->GetGameBoard().GetBoard();
+
+	for (size_t i = 0; i < board.size(); i++)
 	{
-		const auto winner = GameController::GetWinner(game_);
-		QMessageBox::warning(this, "We have a WINNER",
-			(winner.GetName() + " Has won the game").data());
+		for(size_t j = 0; j<board.size(); j++)
+		{
+			const auto clicked_button = GetCell(i, j);
+			if(const auto player = board[i][j].GetPlayer(); 
+				player.GetPlayerType() == PlayerType::BOT && 
+				clicked_button->icon().isNull())
+			{
+				UpdateCellIcon(clicked_button, QString(player.GetSymbol()));
+
+			}
+		}
 	}
 }
 

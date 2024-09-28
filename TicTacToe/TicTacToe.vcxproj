@@ -132,7 +132,6 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameWinningStrategy.h" />
     <ClInclude Include="headers\controller\GameController.h" />
     <ClInclude Include="headers\core\Bot.h" />
     <ClInclude Include="headers\core\BotDifficultyLevel.h" />
@@ -147,10 +146,12 @@
     <ClInclude Include="headers\exceptions\BoardDimensionException.h" />
     <ClInclude Include="headers\exceptions\DuplicatePlayerSymbolException.h" />
     <ClInclude Include="headers\exceptions\PlayerCountException.h" />
-    <ClInclude Include="OrderOneGameWinningStrategy.h" />
+    <ClInclude Include="headers\strategy\BotEasyMove.h" />
+    <ClInclude Include="headers\strategy\BotPlayingStrategy.h" />
+    <ClInclude Include="headers\strategy\GameWinningStrategy.h" />
+    <ClInclude Include="headers\strategy\OrderOneGameWinningStrategy.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OrderOneGameWinningStrategy.cpp" />
     <ClCompile Include="source\controller\GameController.cpp" />
     <ClCompile Include="source\core\Bot.cpp" />
     <ClCompile Include="source\core\Cell.cpp" />
@@ -162,6 +163,8 @@
     <ClCompile Include="source\exceptions\BoardDimensionException.cpp" />
     <ClCompile Include="source\exceptions\DuplicatePlayerSymbolException.cpp" />
     <ClCompile Include="source\exceptions\PlayerCountException.cpp" />
+    <ClCompile Include="source\strategy\BotEasyMove.cpp" />
+    <ClCompile Include="source\strategy\OrderOneGameWinningStrategy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

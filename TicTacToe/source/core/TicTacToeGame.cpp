@@ -5,9 +5,21 @@
 #include <stdexcept>
 
 #include "BoardDimensionException.h"
+#include "Bot.h"
+#include "BotEasyMove.h"
 #include "DuplicatePlayerSymbolException.h"
 #include "PlayerCountException.h"
-#include "../../OrderOneGameWinningStrategy.h"
+#include "OrderOneGameWinningStrategy.h"
+
+GameBoard TicTacToeGame::GetGameBoard() const
+{
+	return board_;
+}
+
+void TicTacToeGame::SetGameBoard(const GameBoard& board)
+{
+	board_ = board;
+}
 
 std::shared_ptr<GameWinningStrategy> TicTacToeGame::GetGameWinningStrategy() const
 {
@@ -29,12 +41,12 @@ void TicTacToeGame::SetWinner(const Player& winner)
 	winner_ = winner;
 }
 
-ListOfPlayers TicTacToeGame::GetPlayers1() const
+ListOfPlayers TicTacToeGame::GetPlayers() const
 {
 	return players_;
 }
 
-void TicTacToeGame::SetPlayers1(const ListOfPlayers& players)
+void TicTacToeGame::SetPlayers(const ListOfPlayers& players)
 {
 	players_ = players;
 }
@@ -49,12 +61,12 @@ void TicTacToeGame::SetMoves(const std::vector<Move>& moves)
 	moves_ = moves;
 }
 
-int TicTacToeGame::GetNextPlayerIndex() const
+size_t TicTacToeGame::GetNextPlayerIndex() const
 {
 	return next_player_index_;
 }
 
-void TicTacToeGame::SetNextPlayerIndex(const int next_player_index)
+void TicTacToeGame::SetNextPlayerIndex(const size_t next_player_index)
 {
 	next_player_index_ = next_player_index;
 }
@@ -74,30 +86,67 @@ void TicTacToeGame::DisplayBoard() const
 	board_.Display();
 }
 
-void TicTacToeGame::ExecuteNextMove(const int row, const int column) 
+bool TicTacToeGame::CheckDraw()
 {
-	if(board_.GetBoard()[row][column].GetCellState() == CellState::EMPTY)
+	const auto& board = board_.GetBoard();
+	for (const auto& row : board) 
 	{
-		auto current_cell = board_.GetBoard()[row][column];
-		const auto player_to_move = *players_[next_player_index_];
-
-		current_cell.SetCellState(CellState::FILLED);
-		current_cell.SetPlayer(player_to_move);
-		const Move current_move(current_cell, player_to_move);
-		moves_.push_back(current_move);
-
-		if(game_winning_strategy_->CheckWinner(board_, current_move))
+		for (const auto& cell : row) 
 		{
-			game_status_ = GameStatus::ENDED;
-			winner_ = player_to_move;
+			if (cell.GetCellState() == CellState::EMPTY) 
+			{  
+				return false;    
+			}
 		}
-
-
-		next_player_index_ += 1;
-		next_player_index_ %= players_.size();
-
-
 	}
+
+	game_status_ = GameStatus::DRAW;
+	return true;
+}
+
+void TicTacToeGame::ExecuteNextMove(const int row, const int column)
+{
+	const bool human_and_bot = players_.size() == 2 &&
+		players_[0]->GetPlayerType() == PlayerType::HUMAN &&
+		players_[1]->GetPlayerType() == PlayerType::BOT;
+
+
+	auto& current_cell = board_.GetBoard()[row][column];
+	const auto player_to_move = *players_[next_player_index_++];
+
+	current_cell.SetCellState(CellState::FILLED);
+	current_cell.SetPlayer(player_to_move);
+	const Move current_move(current_cell, player_to_move);
+	moves_.push_back(current_move);
+
+	if (game_winning_strategy_->CheckWinner(board_, current_move))
+	{
+		game_status_ = GameStatus::ENDED;
+		winner_ = player_to_move;
+		return;
+	}
+
+	if (game_status_ != GameStatus::ENDED && CheckDraw())
+		return;
+
+	if (human_and_bot)
+	{
+		auto* bot_player = dynamic_cast<Bot*>(players_[next_player_index_++].get());
+		if(bot_player->GetBotDifficultyLevel() == BotDifficultyLevel::EASY)
+		{
+			bot_player->SetBotPlayingStrategy(std::make_shared<BotEasyMove>());
+			const auto move = bot_player->MakeMove(*bot_player, board_);
+			if (game_winning_strategy_->CheckWinner(board_, *move))
+			{
+				game_status_ = GameStatus::ENDED;
+				winner_ = static_cast<Player>(*bot_player);
+			}
+			if (CheckDraw())
+				return;
+		}
+	}
+
+	next_player_index_ %= players_.size();
 }
 
 TicTacToeGame::TicTacToeGame(const size_t dimension, ListOfPlayers players) :
@@ -106,23 +155,23 @@ TicTacToeGame::TicTacToeGame(const size_t dimension, ListOfPlayers players) :
 
 }
 
- size_t TicTacToeGame::GameBuilder::GetDimension() const
+size_t TicTacToeGame::GameBuilder::GetDimension() const
 {
 	return dimension_;
 }
 
- TicTacToeGame::GameBuilder TicTacToeGame::GameBuilder::SetDimension(const size_t dimension)
+TicTacToeGame::GameBuilder TicTacToeGame::GameBuilder::SetDimension(const size_t dimension)
 {
 	dimension_ = dimension;
 	return *this;
 }
 
- ListOfPlayers TicTacToeGame::GameBuilder::GetPlayers() const
+ListOfPlayers TicTacToeGame::GameBuilder::GetPlayers() const
 {
 	return players_;
 }
 
- TicTacToeGame::GameBuilder TicTacToeGame::GameBuilder::SetPlayers(const ListOfPlayers& players)
+TicTacToeGame::GameBuilder TicTacToeGame::GameBuilder::SetPlayers(const ListOfPlayers& players)
 {
 	players_ = players;
 	return *this;

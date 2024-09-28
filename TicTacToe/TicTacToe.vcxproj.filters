@@ -96,6 +96,18 @@
     <ClInclude Include="OrderOneGameWinningStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\strategy\BotPlayingStrategy.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\strategy\GameWinningStrategy.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\strategy\OrderOneGameWinningStrategy.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\strategy\BotEasyMove.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\Bot.cpp">
@@ -133,6 +145,12 @@
     </ClCompile>
     <ClCompile Include="OrderOneGameWinningStrategy.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\strategy\OrderOneGameWinningStrategy.cpp">
+      <Filter>Source Files\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\strategy\BotEasyMove.cpp">
+      <Filter>Source Files\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

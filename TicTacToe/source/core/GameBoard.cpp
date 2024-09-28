@@ -22,7 +22,7 @@ GameBoard::GameBoard(const size_t dimension) : dimension_(dimension)
 	}
 }
 
-std::vector<std::vector<Cell>> GameBoard::GetBoard() const
+std::vector<std::vector<Cell>>& GameBoard::GetBoard()
 {
 	return board_;
 }

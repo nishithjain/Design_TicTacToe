@@ -72,4 +72,5 @@ private:
     int next_player_index_ = 0;
 private slots:
     void OnCellClicked(int row, int col);
+    void UpdateBoard() const;
 };

@@ -4,17 +4,23 @@
 
 #include "GameBoard.h"
 #include "GameStatus.h"
+#include "GameWinningStrategy.h"
 #include "Move.h"
 #include "Player.h"
-#include "../../GameWinningStrategy.h"
 
-	using ListOfPlayers = std::vector<std::shared_ptr<Player>>;
+
+using ListOfPlayers = std::vector<std::shared_ptr<Player>>;
 class TicTacToeGame
 {
+public:
+	GameBoard GetGameBoard() const;
+	void SetGameBoard(const GameBoard& board);
+
+private:
 	GameBoard board_;
 	ListOfPlayers players_;
 	std::vector<Move> moves_;
-	int next_player_index_ = 0;
+	size_t next_player_index_ = 0;
 	GameStatus game_status_ = GameStatus::ENDED;
 	Player winner_;
 	std::shared_ptr<GameWinningStrategy> game_winning_strategy_ = nullptr;
@@ -23,15 +29,16 @@ public:
 	void SetGameWinningStrategy(const std::shared_ptr<GameWinningStrategy>& game_winning_strategy);
 	Player GetWinner() const;
 	void SetWinner(const Player& winner);
-	ListOfPlayers GetPlayers1() const;
-	void SetPlayers1(const ListOfPlayers& players);
+	ListOfPlayers GetPlayers() const;
+	void SetPlayers(const ListOfPlayers& players);
 	std::vector<Move> GetMoves() const;
 	void SetMoves(const std::vector<Move>& moves);
-	int GetNextPlayerIndex() const;
-	void SetNextPlayerIndex(int next_player_index);
+	size_t GetNextPlayerIndex() const;
+	void SetNextPlayerIndex(size_t next_player_index);
 	GameStatus GetGameStatus() const;
 	void SetGameStatus(GameStatus game_status);
 	void DisplayBoard() const;
+	bool CheckDraw();
 	void ExecuteNextMove(int row, int column);
 
 	explicit TicTacToeGame(size_t dimension, ListOfPlayers players);
