@@ -146,10 +146,14 @@
     <ClInclude Include="headers\exceptions\BoardDimensionException.h" />
     <ClInclude Include="headers\exceptions\DuplicatePlayerSymbolException.h" />
     <ClInclude Include="headers\exceptions\PlayerCountException.h" />
+    <ClInclude Include="headers\factory\BotPlayingStrategyFactory.h" />
     <ClInclude Include="headers\strategy\BotEasyMove.h" />
+    <ClInclude Include="headers\strategy\BotHardMove.h" />
+    <ClInclude Include="headers\strategy\BotMediumMove.h" />
     <ClInclude Include="headers\strategy\BotPlayingStrategy.h" />
     <ClInclude Include="headers\strategy\GameWinningStrategy.h" />
     <ClInclude Include="headers\strategy\OrderOneGameWinningStrategy.h" />
+    <ClInclude Include="headers\strategy\OrderTwoGameWinningStrategy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\controller\GameController.cpp" />
@@ -163,8 +167,12 @@
     <ClCompile Include="source\exceptions\BoardDimensionException.cpp" />
     <ClCompile Include="source\exceptions\DuplicatePlayerSymbolException.cpp" />
     <ClCompile Include="source\exceptions\PlayerCountException.cpp" />
+    <ClCompile Include="source\factory\BotPlayingStrategyFactory.cpp" />
     <ClCompile Include="source\strategy\BotEasyMove.cpp" />
+    <ClCompile Include="source\strategy\BotHardMove.cpp" />
+    <ClCompile Include="source\strategy\BotMediumMove.cpp" />
     <ClCompile Include="source\strategy\OrderOneGameWinningStrategy.cpp" />
+    <ClCompile Include="source\strategy\OrderTwoGameWinningStrategy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

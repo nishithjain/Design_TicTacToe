@@ -7,6 +7,7 @@
 #include "BoardDimensionException.h"
 #include "Bot.h"
 #include "BotEasyMove.h"
+#include "BotPlayingStrategyFactory.h"
 #include "DuplicatePlayerSymbolException.h"
 #include "PlayerCountException.h"
 #include "OrderOneGameWinningStrategy.h"
@@ -134,7 +135,7 @@ void TicTacToeGame::ExecuteNextMove(const int row, const int column)
 		auto* bot_player = dynamic_cast<Bot*>(players_[next_player_index_++].get());
 		if(bot_player->GetBotDifficultyLevel() == BotDifficultyLevel::EASY)
 		{
-			bot_player->SetBotPlayingStrategy(std::make_shared<BotEasyMove>());
+			bot_player->SetBotPlayingStrategy(BotPlayingStrategyFactory::CreateBotStrategy(BotDifficultyLevel::HARD));
 			const auto move = bot_player->MakeMove(*bot_player, board_);
 			if (game_winning_strategy_->CheckWinner(board_, *move))
 			{

@@ -90,12 +90,6 @@
     <ClInclude Include="headers\controller\GameController.h">
       <Filter>Header Files\controller</Filter>
     </ClInclude>
-    <ClInclude Include="GameWinningStrategy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OrderOneGameWinningStrategy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\strategy\BotPlayingStrategy.h">
       <Filter>Header Files\Strategy</Filter>
     </ClInclude>
@@ -106,6 +100,18 @@
       <Filter>Header Files\Strategy</Filter>
     </ClInclude>
     <ClInclude Include="headers\strategy\BotEasyMove.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\strategy\BotMediumMove.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\factory\BotPlayingStrategyFactory.h">
+      <Filter>Header Files\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\strategy\OrderTwoGameWinningStrategy.h">
+      <Filter>Header Files\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\strategy\BotHardMove.h">
       <Filter>Header Files\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
@@ -143,13 +149,22 @@
     <ClCompile Include="source\controller\GameController.cpp">
       <Filter>Source Files\controller</Filter>
     </ClCompile>
-    <ClCompile Include="OrderOneGameWinningStrategy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\strategy\OrderOneGameWinningStrategy.cpp">
       <Filter>Source Files\Strategy</Filter>
     </ClCompile>
     <ClCompile Include="source\strategy\BotEasyMove.cpp">
+      <Filter>Source Files\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\strategy\BotMediumMove.cpp">
+      <Filter>Source Files\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\factory\BotPlayingStrategyFactory.cpp">
+      <Filter>Source Files\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\strategy\OrderTwoGameWinningStrategy.cpp">
+      <Filter>Source Files\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\strategy\BotHardMove.cpp">
       <Filter>Source Files\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
