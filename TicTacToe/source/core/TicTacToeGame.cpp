@@ -90,13 +90,13 @@ void TicTacToeGame::DisplayBoard() const
 bool TicTacToeGame::CheckDraw()
 {
 	const auto& board = board_.GetBoard();
-	for (const auto& row : board) 
+	for (const auto& row : board)
 	{
-		for (const auto& cell : row) 
+		for (const auto& cell : row)
 		{
-			if (cell.GetCellState() == CellState::EMPTY) 
-			{  
-				return false;    
+			if (cell.GetCellState() == CellState::EMPTY)
+			{
+				return false;
 			}
 		}
 	}
@@ -133,18 +133,16 @@ void TicTacToeGame::ExecuteNextMove(const int row, const int column)
 	if (human_and_bot)
 	{
 		auto* bot_player = dynamic_cast<Bot*>(players_[next_player_index_++].get());
-		if(bot_player->GetBotDifficultyLevel() == BotDifficultyLevel::EASY)
+		bot_player->SetBotPlayingStrategy(
+			BotPlayingStrategyFactory::CreateBotStrategy(bot_player->GetBotDifficultyLevel()));
+		const auto move = bot_player->MakeMove(*bot_player, board_);
+		if (game_winning_strategy_->CheckWinner(board_, *move))
 		{
-			bot_player->SetBotPlayingStrategy(BotPlayingStrategyFactory::CreateBotStrategy(BotDifficultyLevel::HARD));
-			const auto move = bot_player->MakeMove(*bot_player, board_);
-			if (game_winning_strategy_->CheckWinner(board_, *move))
-			{
-				game_status_ = GameStatus::ENDED;
-				winner_ = static_cast<Player>(*bot_player);
-			}
-			if (CheckDraw())
-				return;
+			game_status_ = GameStatus::ENDED;
+			winner_ = static_cast<Player>(*bot_player);
 		}
+		if (CheckDraw())
+			return;
 	}
 
 	next_player_index_ %= players_.size();

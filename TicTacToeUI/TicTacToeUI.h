@@ -5,6 +5,7 @@
 #include "ui_TicTacToeUI.h"
 #include <tuple>
 
+#include "BotDifficultyLevel.h"
 #include "TicTacToeGame.h"
 
 class TicTacToeUi final : public QMainWindow
@@ -13,6 +14,8 @@ class TicTacToeUi final : public QMainWindow
 
 public:
     explicit TicTacToeUi(QWidget *parent = nullptr);
+    void OnDifficultyLevelChanged() const;
+    void OnBotRadioToggled() const;
     ~TicTacToeUi() override = default;
 
 private:
@@ -37,7 +40,9 @@ private:
 
         bool bot_selected;
         bool bot_enabled;
-        bool player_selected;
+        QString bot_difficulty_level;
+        bool bot_difficulty_level_enabled;
+    	bool player_selected;
         bool player_enabled;
 
         QString p2_name;
@@ -54,6 +59,7 @@ private:
     [[nodiscard]] std::tuple<QString, QString> GetPlayer1NameAndSymbol() const;
     [[nodiscard]] std::tuple<QString, QString> GetPlayer2NameAndSymbol() const;
     void InformationLine(const QString& text) const;
+    BotDifficultyLevel GetBotDifficultyLevel() const;
     void Play();
     static QString FormatPlayerInfo(const std::tuple<QString, QString>& player_info);
     void OnP1NameChanged(const QString& text) const;
@@ -66,7 +72,7 @@ private:
     static void UpdateCellIcon(QPushButton* clicked_button, const QString& symbol);
     void OnP1SymbolChanged();
     void OnP2SymbolChanged();
-    [[nodiscard]] QPushButton* GetCell(int row, int col) const;
+    [[nodiscard]] QPushButton* GetCell(size_t row, size_t col) const;
 
     std::shared_ptr<TicTacToeGame> game_;
     int next_player_index_ = 0;

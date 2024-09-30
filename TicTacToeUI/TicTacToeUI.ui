@@ -354,9 +354,9 @@ QGroupBox::title {
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>140</y>
+       <y>130</y>
        <width>211</width>
-       <height>141</height>
+       <height>151</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -387,17 +387,39 @@ QGroupBox::title {
         <x>10</x>
         <y>20</y>
         <width>191</width>
-        <height>111</height>
+        <height>129</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="p2Grid">
-       <item row="7" column="0">
-        <widget class="QLabel" name="p2SymbolLabel">
+       <item row="4" column="1">
+        <widget class="QComboBox" name="botDifficultyLevelCombo">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>Easy</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Medium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Hard</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QRadioButton" name="playerRadioBtn">
          <property name="enabled">
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Symbol</string>
+          <string>Player</string>
          </property>
         </widget>
        </item>
@@ -438,13 +460,13 @@ QGroupBox::title {
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="QRadioButton" name="playerRadioBtn">
+       <item row="7" column="0">
+        <widget class="QLabel" name="p2SymbolLabel">
          <property name="enabled">
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Player</string>
+          <string>Symbol</string>
          </property>
         </widget>
        </item>
@@ -455,7 +477,7 @@ QGroupBox::title {
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="4" column="0">
         <widget class="QRadioButton" name="botRadioBtn">
          <property name="enabled">
           <bool>false</bool>

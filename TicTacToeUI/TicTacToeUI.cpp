@@ -11,7 +11,7 @@
 #include "../TicTacToe/headers/controller/GameController.h"
 
 
-QPushButton* TicTacToeUi::GetCell(const int row, const int col) const
+QPushButton* TicTacToeUi::GetCell(const size_t row, const size_t col) const
 {
 	QPushButton* cells[3][3] =
 	{
@@ -25,6 +25,7 @@ QPushButton* TicTacToeUi::GetCell(const int row, const int col) const
 TicTacToeUi::TicTacToeUi(QWidget* parent) : QMainWindow(parent)
 {
 	ui_.setupUi(this);
+	setWindowTitle("Tic-Tac-Toe");
 	OnP1SymbolChanged();
 
 	ui_.frame->setFrameStyle(QFrame::StyledPanel);
@@ -43,14 +44,26 @@ TicTacToeUi::TicTacToeUi(QWidget* parent) : QMainWindow(parent)
 	// Connect other UI elements
 	connect(ui_.p1NameLineEdit, &QLineEdit::textChanged, this, &TicTacToeUi::OnP1NameChanged);
 	connect(ui_.playerRadioBtn, &QRadioButton::toggled, this, &TicTacToeUi::OnPlayerRadioToggled);
+	connect(ui_.botRadioBtn, &QRadioButton::toggled, this, &TicTacToeUi::OnBotRadioToggled);
 	connect(ui_.playButton, &QPushButton::clicked, this, &TicTacToeUi::OnPlayButtonClicked);
 	connect(ui_.undoButton, &QPushButton::clicked, this, &TicTacToeUi::OnUndoButtonClicked);
 	connect(ui_.gameResetButton, &QPushButton::clicked, this, &TicTacToeUi::OnResetButtonClicked);
 	connect(ui_.p1SymbolCombo, &QComboBox::currentTextChanged, this, &TicTacToeUi::OnP1SymbolChanged);
 	connect(ui_.p2SymbolCombo, &QComboBox::currentTextChanged, this, &TicTacToeUi::OnP2SymbolChanged);
+	connect(ui_.botDifficultyLevelCombo, &QComboBox::currentTextChanged, this, &TicTacToeUi::OnDifficultyLevelChanged);
 
 	// Initialize the UI to the starting state
 	ResetUi();
+}
+
+void TicTacToeUi::OnDifficultyLevelChanged() const
+{
+	const QString difficulty_level = ui_.botDifficultyLevelCombo->currentText();
+}
+
+void TicTacToeUi::OnBotRadioToggled() const
+{
+	ui_.botDifficultyLevelCombo->setEnabled(true);
 }
 
 void TicTacToeUi::OnP1SymbolChanged()
@@ -100,6 +113,7 @@ void TicTacToeUi::OnP1NameChanged(const QString& text) const
 	ui_.p1SymbolCombo->setEnabled(is_not_empty);
 	ui_.botRadioBtn->setEnabled(is_not_empty);
 	ui_.botRadioBtn->setChecked(is_not_empty);
+	ui_.botDifficultyLevelCombo->setEnabled(is_not_empty);
 	ui_.playerRadioBtn->setEnabled(is_not_empty);
 	ui_.playButton->setEnabled(is_not_empty);
 }
@@ -111,6 +125,7 @@ void TicTacToeUi::OnPlayerRadioToggled(const bool checked) const
 	ui_.p2NameLineEdit->setEnabled(checked);
 	ui_.p2SymbolLabel->setEnabled(checked);
 	ui_.p2SymbolCombo->setEnabled(checked);
+	ui_.botDifficultyLevelCombo->setEnabled(!checked);
 }
 
 void TicTacToeUi::SetGameState(const bool is_active) const
@@ -262,6 +277,8 @@ void TicTacToeUi::CaptureState()
 
 	current_state_.bot_selected = ui_.botRadioBtn->isChecked();
 	current_state_.bot_enabled = ui_.botRadioBtn->isEnabled();
+	current_state_.bot_difficulty_level = ui_.botDifficultyLevelCombo->currentText();
+	current_state_.bot_difficulty_level_enabled = ui_.botDifficultyLevelCombo->isEnabled();
 	current_state_.player_selected = ui_.playerRadioBtn->isChecked();
 	current_state_.player_enabled = ui_.playerRadioBtn->isEnabled();
 
@@ -280,6 +297,8 @@ void TicTacToeUi::RestoreState() const
 
 	ui_.botRadioBtn->setChecked(current_state_.bot_selected);
 	ui_.botRadioBtn->setEnabled(current_state_.bot_enabled);
+	ui_.botDifficultyLevelCombo->setEnabled(current_state_.bot_difficulty_level_enabled);
+	ui_.botDifficultyLevelCombo->setCurrentText(current_state_.bot_difficulty_level);
 	ui_.playerRadioBtn->setChecked(current_state_.player_selected);
 	ui_.playerRadioBtn->setEnabled(current_state_.player_enabled);
 
@@ -354,6 +373,21 @@ void TicTacToeUi::InformationLine(const QString& text) const
 	ui_.InformationLineEdit->setText(text);
 }
 
+BotDifficultyLevel TicTacToeUi::GetBotDifficultyLevel() const
+{
+	const QString selected_value = ui_.botDifficultyLevelCombo->currentText();
+
+	if (selected_value == "Easy")
+		return BotDifficultyLevel::EASY;
+	if (selected_value == "Medium")
+		return BotDifficultyLevel::MEDIUM;
+	if (selected_value == "Hard")
+		return BotDifficultyLevel::HARD;
+
+	// Default case, return EASY if no match found
+	return BotDifficultyLevel::EASY;
+}
+
 void TicTacToeUi::Play()
 {
 	constexpr int dimension = 3;
@@ -366,7 +400,7 @@ void TicTacToeUi::Play()
 	if (ui_.botRadioBtn->isChecked())
 	{
 		players.push_back(std::make_shared<Bot>("Bot", std::get<1>(player_info_.player2_info).toStdString().c_str()[0],
-			BotDifficultyLevel::EASY));
+			GetBotDifficultyLevel()));
 	}
 	else
 	{
@@ -408,10 +442,10 @@ void TicTacToeUi::OnPlayButtonClicked()
 	ui_.p1NameLineEdit->setEnabled(false);
 	ui_.p1SymbolCombo->setEnabled(false);
 	ui_.botRadioBtn->setEnabled(false);
+	ui_.botDifficultyLevelCombo->setEnabled(false);
 	ui_.playerRadioBtn->setEnabled(false);
 	ui_.p2NameLineEdit->setEnabled(false);
 	ui_.p2SymbolCombo->setEnabled(false);
-
 
 	const auto text = "Your turn [" + FormatPlayerInfo(player_info_.current_player_info) + "]";
 	InformationLine(text);
